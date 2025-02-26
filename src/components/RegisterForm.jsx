@@ -26,23 +26,27 @@ const RegisterForm = ({ submitFunc, submitInProgress = false }) => {
           </label>
           <input
             name="email"
-            type="text"
+            type="email"
             className="loginRegisterInputStyle"
             placeholder="Enter your email "
             required
           />
         </div>
-        <div className="flex flex-col space-y-1">
+        <div className="">
           <label htmlFor="mobileNumber" className="font-medium text-sm">
             Mobile number
           </label>
-          <input
-            name="mobileNumber"
-            type="text"
-            className="loginRegisterInputStyle"
-            placeholder="Enter mobile number "
-            required
-          />
+          {/* dial code and number*/}
+
+          <div className=" ">
+            <input
+              name="mobileNumber"
+              type="text"
+              className="loginRegisterInputStyle w-full"
+              placeholder="Enter mobile number "
+              required
+            />
+          </div>
         </div>
         <div className="flex flex-col space-y-1">
           <label htmlFor="nid" className="font-medium text-sm">
@@ -67,7 +71,7 @@ const RegisterForm = ({ submitFunc, submitInProgress = false }) => {
             required
           >
             <option value="user">User</option>
-            <option value="admin">Admin</option>
+            <option value="agent">Agent</option>
           </select>
         </div>
         <div className="flex flex-col space-y-1">

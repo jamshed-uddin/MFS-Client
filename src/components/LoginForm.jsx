@@ -17,6 +17,7 @@ const LoginForm = ({ submitFunc, submitInProgress }) => {
             type="text"
             className="loginRegisterInputStyle"
             placeholder="Enter email or mobile number "
+            required
           />
         </div>
         <div className="flex flex-col space-y-1">
@@ -25,7 +26,9 @@ const LoginForm = ({ submitFunc, submitInProgress }) => {
           </label>
           <PinInput />
         </div>
-        <Button>Login</Button>
+        <Button type="submit" loading={submitInProgress}>
+          Login
+        </Button>
       </form>
     </div>
   );

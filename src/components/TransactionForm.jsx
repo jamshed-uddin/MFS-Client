@@ -1,28 +1,32 @@
 "use client";
 
 import React, { useState } from "react";
+import Button from "./Button";
+import ReceiverNumber from "./ReceiverNumber";
 
 const TransactionForm = ({ submitTransaction, submitInProgress }) => {
   const [receiverNumber, setReceiverNumber] = useState("");
   const inputStyle =
     "input  border-b bg-inherit border-b-gray-400 rounded-none outline-none focus:outline-none focus:border-0 focus:border-b focus:border-b-gray-400 w-full px-1";
 
-  console.log(cookieStore.get("hello"));
   return (
     <form onSubmit={submitTransaction} className="space-y-4">
       {/* receiver number */}
-      <div className="">
-        <label className={"text-sm font-medium"}>Receiver number</label>
-        <input
-          type="text"
-          className={inputStyle}
-          placeholder="Receiver number"
-        />
-      </div>
+      <ReceiverNumber />
       {/* amount*/}
       <div className="">
         <label className={"text-sm font-medium"}>Amount</label>
-        <input type="text" className={inputStyle} placeholder="Amount" />
+        <input
+          name="amount"
+          type="text"
+          inputMode="numeric"
+          onInput={(e) => {
+            e.target.value = e.target.value.replace(/\D/g, "");
+          }}
+          className={inputStyle}
+          placeholder="Amount"
+          required
+        />
 
         <div className="flex justify-between text-sm font-medium">
           <h2>Useable balance: 1000</h2>
@@ -31,7 +35,15 @@ const TransactionForm = ({ submitTransaction, submitInProgress }) => {
       {/* receiver number */}
       <div className="">
         <label className={"text-sm font-medium"}>Note</label>
-        <input type="text" className={inputStyle} placeholder="Note" />
+        <input
+          name="note"
+          type="text"
+          className={inputStyle}
+          placeholder="Note"
+        />
+      </div>
+      <div>
+        <Button type="submit">Submit</Button>
       </div>
     </form>
   );
