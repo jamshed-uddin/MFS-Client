@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.loginRegisterInputStyle {
+  @apply py-2 border border-gray-500 rounded-xl bg-inherit  focus:outline-0 focus:border focus:border-black px-1;
+}
