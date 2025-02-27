@@ -18,11 +18,9 @@ const SessionProviders = ({ children }) => {
     token.trim().length > 0
   ) {
     try {
-      console.log("inside if block");
       const decoded = jwtDecode(token);
       userId = decoded?._id || null;
     } catch (error) {
-      console.log("failed to decode");
       console.error("JWT Decode Error:", error);
     }
   }
@@ -54,8 +52,6 @@ const SessionProviders = ({ children }) => {
   const isAgent = () => {
     return user?.role === "agent";
   };
-
-  console.log(user);
 
   const value = {
     user: user,

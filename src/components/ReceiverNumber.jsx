@@ -3,6 +3,7 @@ import { requestClient } from "@/utils/requestClient";
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "@uidotdev/usehooks";
 import { NameNumberCard } from "./NameNumber";
+import toast from "react-hot-toast";
 
 const ReceiverNumber = () => {
   const [numberQuery, setNumberQuery] = useState("");
@@ -25,17 +26,14 @@ const ReceiverNumber = () => {
       try {
         const result = await requestClient(`/users/search?q=${value}`);
 
-        console.log(result);
         setUserResult(result?.data);
       } catch (error) {
-        console.log(error);
+        toast.error("Something went wrong");
       }
     };
 
     getResult();
   }, [value]);
-
-  console.log(userResult);
 
   return (
     <div className="">

@@ -35,7 +35,7 @@ const Recharge = () => {
     try {
       setLoading(true);
       const data = await handleSubmitTransaction("/recharge", transactionData);
-      console.log(data);
+
       router.push("/wallet");
       revalidateUser();
       toast.success("Balance recharge request sent and under review", {
@@ -43,7 +43,6 @@ const Recharge = () => {
       });
     } catch (error) {
       toast.error(error.message || "Something went wrong");
-      console.log(error);
     } finally {
       setLoading(false);
     }

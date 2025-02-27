@@ -8,8 +8,6 @@ import getTransactions from "@/utils/getTransactions";
 const RecentTransactions = async () => {
   const transactions = await getTransactions("/transactions?limit=5");
 
-  console.log("transations", transactions);
-
   return (
     <div>
       <div className="flex justify-between">

@@ -29,13 +29,12 @@ const SendMoney = () => {
     try {
       setLoading(true);
       const data = await handleSubmitTransaction("/sendmoney", transactionData);
-      console.log(data);
+
       router.push("/wallet");
       revalidateUser();
       toast.success("Send money successful", { duration: 6000 });
     } catch (error) {
       toast.error(error.message || "Something went wrong");
-      console.log(error);
     } finally {
       setLoading(false);
     }

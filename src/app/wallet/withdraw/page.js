@@ -39,7 +39,7 @@ const Withdraw = () => {
         "/withdrawal",
         transactionData
       );
-      console.log(data);
+
       router.push("/wallet");
       revalidateUser();
       toast.success("Withdrawal request sent and under review", {
@@ -47,7 +47,6 @@ const Withdraw = () => {
       });
     } catch (error) {
       toast.error(error.message || "Something went wrong");
-      console.log(error);
     } finally {
       setLoading(false);
     }

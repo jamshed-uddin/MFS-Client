@@ -35,13 +35,12 @@ const Cashin = () => {
     try {
       setLoading(true);
       const data = await handleSubmitTransaction("/cashin", transactionData);
-      console.log(data);
+
       router.push("/wallet");
       revalidateUser();
       toast.success("Cash in successful", { duration: 6000 });
     } catch (error) {
       toast.error(error.message || "Something went wrong");
-      console.log(error);
     } finally {
       setLoading(false);
     }

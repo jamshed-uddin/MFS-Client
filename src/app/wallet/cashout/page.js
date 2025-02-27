@@ -29,13 +29,12 @@ const Cashout = () => {
     try {
       setLoading(true);
       const data = await handleSubmitTransaction("/cashout", transactionData);
-      console.log(data);
+
       router.push("/wallet");
       revalidateUser();
       toast.success("Cash out successful", { duration: 6000 });
     } catch (error) {
       toast.error(error.message || "Something went wrong");
-      console.log(error);
     } finally {
       setLoading(false);
     }

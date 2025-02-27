@@ -14,7 +14,7 @@ export const NameNumberCard = ({ name, number }) => {
 
 const NameNumber = () => {
   const { user } = useSession();
-  console.log(user);
+
   return <NameNumberCard name={user?.name} number={user?.mobileNumber} />;
 };
 

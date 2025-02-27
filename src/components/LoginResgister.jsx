@@ -16,7 +16,7 @@ const LoginResgister = () => {
   const handleLogin = async (e) => {
     setError("");
     e.preventDefault();
-    console.log(process.env.NEXT_PUBLIC_SERVER_URL);
+
     const target = e.currentTarget;
     const formData = new FormData(target);
     const credentials = Object.fromEntries(formData);
@@ -26,35 +26,19 @@ const LoginResgister = () => {
 
     try {
       setLoading(true);
-      console.log("inside try block");
+
       const res = await requestClient("/users/login", {
         method: "POST",
         body: JSON.stringify(credentials),
       });
-      console.log(res);
+
       Cookies.set("token", res?.data?.token);
       router.push("/wallet");
-      // const res = await fetch(
-      //   `${process.env.NEXT_PUBLIC_SERVER_URL}/users/login`,
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify(credentials),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-
-      // const data = res.json();
-      // console.log(data);
     } catch (error) {
-      console.log(error);
       setError(error?.message);
     } finally {
       setLoading(false);
     }
-
-    console.log(credentials);
   };
 
   const handleRegister = async (e) => {
@@ -75,11 +59,10 @@ const LoginResgister = () => {
         method: "POST",
         body: JSON.stringify(userInfo),
       });
-      console.log(res);
+
       Cookies.set("token", res?.data?.token);
       router.push("/wallet");
     } catch (error) {
-      console.log(error);
       setError(error?.message);
     } finally {
       setLoading(false);

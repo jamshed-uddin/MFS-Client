@@ -55,8 +55,6 @@ const Balance = () => {
     return data?.totalBalance;
   });
 
-  console.log(isAdmin);
-
   return (
     <div>
       {/* balance */}

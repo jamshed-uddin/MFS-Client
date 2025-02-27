@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 
 const TransactionForm = ({ submitTransaction, submitInProgress }) => {
   const pathname = usePathname();
-  console.log(pathname);
+
   const { user } = useSession();
 
   const inputStyle =

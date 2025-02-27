@@ -20,7 +20,7 @@ const UserCard = ({ user }) => {
         method: "PUT",
         body: JSON.stringify({ isActive: isBlocked }),
       });
-      console.log(data);
+
       toast.success("User active status updated");
       router.refresh();
     } catch (error) {

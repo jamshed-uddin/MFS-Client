@@ -61,7 +61,7 @@ const Menu = () => {
   const filteredMenuLinks = menuLinks.filter(({ name }) =>
     roleBasedMenu[user?.role]?.includes(name)
   );
-  console.log(filteredMenuLinks);
+
   return (
     <div className="flex items-center flex-wrap gap-3 ">
       {filteredMenuLinks?.map((link) => (

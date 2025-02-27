@@ -56,12 +56,11 @@ const TransactionCard = ({ transaction }) => {
         method: "PUT",
         body: JSON.stringify({ status: selectedStatus }),
       });
-      console.log(res);
+
       toast.success(`Transaction ${selectedStatus}`);
       closeModal();
     } catch (error) {
       toast.error(error.message || "Something wrong with approval update");
-      console.log(error);
     } finally {
       setLoading(false);
     }
