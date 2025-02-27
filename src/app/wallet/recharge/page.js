@@ -2,14 +2,20 @@
 
 import PageTitle from "@/components/PageTitle";
 import TransactionForm from "@/components/TransactionForm";
+import useSession from "@/hooks/useSession";
 import handleSubmitTransaction from "@/utils/handleSubmitTransaction";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Recharge = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { isAgent } = useSession();
+
+  useEffect(() => {
+    if (!isAgent) router.push("/wallet");
+  }, [isAgent, router]);
 
   const submitBalanceRecharge = async (e) => {
     e.preventDefault();

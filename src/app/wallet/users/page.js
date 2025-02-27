@@ -1,15 +1,23 @@
+"use client";
+
 import UserFilter from "@/components/UserFilter";
 import UsersList from "@/components/UsersList";
+import useSession from "@/hooks/useSession";
 import { requestClient } from "@/utils/requestClient";
-import { cookies } from "next/headers";
-import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-const Users = async ({ searchParams }) => {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token").value;
-
-  const params = await searchParams;
+const Users = () => {
+  const [users, setUsers] = useState([]);
+  const params = useSearchParams();
   const validQueries = ["role", "status", "activeOnly"];
+
+  const router = useRouter();
+  const { isAdmin } = useSession();
+
+  useEffect(() => {
+    if (!isAdmin) router.push("/wallet");
+  }, [isAdmin, router]);
 
   const validQueryParams = (searchParams, validQueries) => {
     const queries = {};
@@ -25,18 +33,25 @@ const Users = async ({ searchParams }) => {
 
   const validParams = validQueryParams(params, validQueries);
 
-  const users = await requestClient(`/users?${validParams}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  useEffect(() => {
+    const getUser = async () => {
+      const data = await requestClient(`/users?${validParams}`);
+      setUsers(data?.data);
+    };
 
-  console.log(users);
+    getUser();
+  }, [validParams]);
   return (
-    <div>
+    <div className=" space-y-4">
       <UserFilter />
-      <UsersList users={users?.data} />
+      <div>
+        <div className="grid grid-cols-5 place-content-start gap-6 py-2.5">
+          {["Name", "Email", "Mobile number", "Balance", "Action"].map((n) => (
+            <div key={n}>{n}</div>
+          ))}
+        </div>
+        <UsersList users={users} />
+      </div>
     </div>
   );
 };

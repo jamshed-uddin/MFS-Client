@@ -1,9 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-
-export default function Tooggler({ isChecked, onToggle }) {
+export default function Toggler({ isChecked, onToggle }) {
   return (
     <label className="flex items-center cursor-pointer">
       <div className="relative">
@@ -12,7 +9,6 @@ export default function Tooggler({ isChecked, onToggle }) {
           className="sr-only"
           checked={isChecked}
           onChange={(e) => {
-            setIsChecked(!isChecked);
             onToggle?.(e.target.checked);
           }}
         />

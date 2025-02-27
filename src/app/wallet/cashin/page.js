@@ -2,14 +2,20 @@
 
 import PageTitle from "@/components/PageTitle";
 import TransactionForm from "@/components/TransactionForm";
+import useSession from "@/hooks/useSession";
 import handleSubmitTransaction from "@/utils/handleSubmitTransaction";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Cashin = () => {
   const router = useRouter();
+  const { isAgent } = useSession();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isAgent) router.push("/wallet");
+  }, [isAgent, router]);
 
   const submitCashin = async (e) => {
     e.preventDefault();
