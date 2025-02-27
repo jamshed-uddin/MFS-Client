@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import Button from "./Button";
 import ReceiverNumber from "./ReceiverNumber";
+import useSession from "@/hooks/useSession";
 
 const TransactionForm = ({ submitTransaction, submitInProgress }) => {
-  const [receiverNumber, setReceiverNumber] = useState("");
+  const { user } = useSession();
   const inputStyle =
     "input  border-b bg-inherit border-b-gray-400 rounded-none outline-none focus:outline-none focus:border-0 focus:border-b focus:border-b-gray-400 w-full px-1";
 
@@ -29,12 +30,15 @@ const TransactionForm = ({ submitTransaction, submitInProgress }) => {
         />
 
         <div className="flex justify-between text-sm font-medium">
-          <h2>Useable balance: 1000</h2>
+          <h2>Useable balance: {user?.balance}</h2>
         </div>
       </div>
       {/* receiver number */}
       <div className="">
-        <label className={"text-sm font-medium"}>Note</label>
+        <div className="flex justify-between">
+          <label className={"text-sm font-medium"}>Note</label>
+          <h4 className="text-sm ">50 character</h4>
+        </div>
         <input
           name="note"
           type="text"
@@ -43,7 +47,13 @@ const TransactionForm = ({ submitTransaction, submitInProgress }) => {
         />
       </div>
       <div>
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          disabled={submitInProgress}
+          loading={submitInProgress}
+        >
+          Submit
+        </Button>
       </div>
     </form>
   );
