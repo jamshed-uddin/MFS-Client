@@ -1,14 +1,14 @@
 "use client";
 import { requestClient } from "@/utils/requestClient";
 import React, { useEffect, useState } from "react";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
+import { useDebounce } from "@uidotdev/usehooks";
 import { NameNumberCard } from "./NameNumber";
 
 const ReceiverNumber = () => {
   const [numberQuery, setNumberQuery] = useState("");
   const [userResult, setUserResult] = useState([]);
   const [selectedNumber, setSelectedNumber] = useState("");
-  const [value] = useDebounce(numberQuery, 600);
+  const value = useDebounce(numberQuery, 600);
 
   const inputStyle =
     "input  border-b bg-inherit border-b-gray-400 rounded-none outline-none focus:outline-none focus:border-0 focus:border-b focus:border-b-gray-400 w-full px-1";

@@ -40,7 +40,7 @@ const SessionProviders = ({ children }) => {
 
       return data?.data;
     },
-    { revalidateOnFocus: true }
+    { revalidateOnMount: true }
   );
 
   const isLoggedIn = () => {

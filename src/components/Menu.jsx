@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   ArrowRightIcon,
@@ -6,45 +7,64 @@ import {
   ArrowLeftStartOnRectangleIcon,
   DocumentCurrencyBangladeshiIcon,
   ArrowDownIcon,
+  ClipboardDocumentListIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import useSession from "@/hooks/useSession";
 const menuLinks = [
   {
     name: "Send money",
     href: "/wallet/sendmoney",
     icons: [DocumentCurrencyBangladeshiIcon, ArrowRightIcon],
-    access: "user",
   },
   {
     name: "Cash out",
     href: "/wallet/cashout",
     icons: [DocumentCurrencyBangladeshiIcon, ArrowRightStartOnRectangleIcon],
-    access: "user",
   },
   {
     name: "Cash in",
     href: "/wallet/cashin",
     icons: [DocumentCurrencyBangladeshiIcon, ArrowLeftStartOnRectangleIcon],
-    access: "user",
   },
   {
     name: "Withdraw",
     href: "/wallet/withdraw",
     icons: [DocumentCurrencyBangladeshiIcon, ArrowUpIcon],
-    access: "user",
   },
   {
     name: "Recharge",
     href: "/wallet/recharge",
     icons: [DocumentCurrencyBangladeshiIcon, ArrowDownIcon],
-    access: "user",
+  },
+  {
+    name: "Users",
+    href: "/wallet/users",
+    icons: [UsersIcon],
+  },
+  {
+    name: "Transactions",
+    href: "/wallet/transactions",
+    icons: [ClipboardDocumentListIcon],
   },
 ];
 
 const Menu = () => {
+  const { user } = useSession();
+  const roleBasedMenu = {
+    user: ["Send money", "Cash out", "Transactions"],
+    agent: ["Cash in", "Withdraw", "Recharge", "Transactions"],
+    admin: ["Recharge", "Users", "Transactions"],
+  };
+
+  const filteredMenuLinks = menuLinks.filter(({ name }) =>
+    roleBasedMenu[user?.role]?.includes(name)
+  );
+  console.log(filteredMenuLinks);
   return (
     <div className="flex items-center flex-wrap gap-3 ">
-      {menuLinks.map((link) => (
+      {filteredMenuLinks?.map((link) => (
         <Link
           href={link.href}
           key={link.name}

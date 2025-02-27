@@ -11,7 +11,7 @@ const Wallet = async ({ children }) => {
     redirect("/");
   }
   return (
-    <div className="max-w-2xl mx-auto  h-screen bg-white bg-opacity-50 p-2">
+    <div className="max-w-2xl mx-auto bg-white bg-opacity-50 p-2  h-screen overflow-y-auto overflow-x-hidden hide-scrollbar ">
       <Toaster
         toastOptions={{
           duration: 5000,
@@ -19,7 +19,7 @@ const Wallet = async ({ children }) => {
       />
       <Logo />
 
-      {children}
+      <div className=" h-max pb-10">{children}</div>
     </div>
   );
 };

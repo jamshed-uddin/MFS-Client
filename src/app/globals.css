@@ -5,3 +5,14 @@
 .loginRegisterInputStyle {
   @apply py-2 border border-gray-500 rounded-xl bg-inherit  focus:outline-0 focus:border focus:border-black px-1;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

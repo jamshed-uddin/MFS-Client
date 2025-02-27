@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-tr from-white to-sky-100 min-h-screen min-w-screen px-4 lg:px-0`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-tr from-white to-sky-100  h-screen   overflow-y-auto`}
       >
         <SessionProviders>{children}</SessionProviders>
       </body>

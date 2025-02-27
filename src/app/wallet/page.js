@@ -2,6 +2,7 @@ import Balance from "@/components/Balance";
 import LogoutButton from "@/components/LogoutButton";
 import Menu from "@/components/Menu";
 import NameNumber from "@/components/NameNumber";
+import RecentTransactions from "@/components/RecentTransactions";
 
 import React from "react";
 
@@ -21,7 +22,7 @@ const WalletHome = () => {
 
       {/* recent transaction */}
       <div>
-        <h2>Recent transactions</h2>
+        <RecentTransactions />
       </div>
     </div>
   );
