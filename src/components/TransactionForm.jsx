@@ -4,16 +4,23 @@ import React, { useState } from "react";
 import Button from "./Button";
 import ReceiverNumber from "./ReceiverNumber";
 import useSession from "@/hooks/useSession";
+import { usePathname } from "next/navigation";
 
 const TransactionForm = ({ submitTransaction, submitInProgress }) => {
+  const pathname = usePathname();
+  console.log(pathname);
   const { user } = useSession();
+
   const inputStyle =
     "input  border-b bg-inherit border-b-gray-400 rounded-none outline-none focus:outline-none focus:border-0 focus:border-b focus:border-b-gray-400 w-full px-1";
 
   return (
     <form onSubmit={submitTransaction} className="space-y-4">
       {/* receiver number */}
-      <ReceiverNumber />
+      {/* withdrawal and recharge request goes to admin and while receiver is admin it's handled in server */}
+      {pathname !== "/wallet/withdraw" && pathname !== "/wallet/recharge" && (
+        <ReceiverNumber />
+      )}
       {/* amount*/}
       <div className="">
         <label className={"text-sm font-medium"}>Amount</label>

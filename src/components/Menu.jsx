@@ -55,7 +55,7 @@ const Menu = () => {
   const roleBasedMenu = {
     user: ["Send money", "Cash out", "Transactions"],
     agent: ["Cash in", "Withdraw", "Recharge", "Transactions"],
-    admin: ["Recharge", "Users", "Transactions"],
+    admin: ["Users", "Transactions"],
   };
 
   const filteredMenuLinks = menuLinks.filter(({ name }) =>

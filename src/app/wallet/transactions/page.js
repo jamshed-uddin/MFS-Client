@@ -22,8 +22,6 @@ const Transactions = async ({ searchParams }) => {
 
   const validParams = validQueryParams(params, validQueries);
 
-  console.log(validParams);
-
   const transactions = await getTransactions(`/transactions?${validParams}`);
 
   return (
