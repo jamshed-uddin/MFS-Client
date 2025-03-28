@@ -1,19 +1,23 @@
 import Balance from "@/components/Balance";
-import LogoutButton from "@/components/LogoutButton";
+
 import Menu from "@/components/Menu";
 import NameNumber from "@/components/NameNumber";
 import RecentTransactions from "@/components/RecentTransactions";
+import SettingDropdown from "@/components/SettingDropdown";
+import { getCookiesAsync } from "@/utils/cookieOpsAsync";
 
 import React from "react";
 
-const WalletHome = () => {
+const WalletHome = async () => {
+  const { token } = await getCookiesAsync("session");
+
   return (
-    <div className="space-y-10">
+    <div className="space-y-7">
       {/* name and number */}
       <div className="flex justify-between items-start">
         <NameNumber />
 
-        <LogoutButton />
+        <SettingDropdown />
       </div>
       <Balance balance={4000} />
 

@@ -4,10 +4,12 @@ const PinInput = ({ className }) => {
   return (
     <input
       name="pin"
-      type="text"
+      id="pin"
+      data-testid="pinInput"
+      type="password"
       maxLength="5"
       inputMode="numeric"
-      className={`loginRegisterInputStyle ${className}`}
+      className={`${className}`}
       required
       onInput={(e) => {
         e.target.value = e.target.value.replace(/\D/g, "").slice(0, 5);

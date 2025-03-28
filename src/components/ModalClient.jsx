@@ -4,7 +4,7 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const ModalClient = ({
-  open,
+  open = false,
   close,
   children,
   internalCloseButton = false,

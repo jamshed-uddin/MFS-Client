@@ -1,16 +1,15 @@
 "use client";
 import PageTitle from "@/components/PageTitle";
 import TransactionForm from "@/components/TransactionForm";
-import useSession from "@/hooks/useSession";
-import handleSubmitTransaction from "@/utils/handleSubmitTransaction";
+import { useAddTransactionMutation } from "@/redux/APIs/baseApi";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 
 const SendMoney = () => {
   const router = useRouter();
-  const { revalidateUser } = useSession();
-  const [loading, setLoading] = useState(false);
+  const [addTransaction, { isLoading }] = useAddTransactionMutation();
+
   const submitSendMoney = async (e) => {
     e.preventDefault();
     const currentTarget = e.currentTarget;
@@ -27,16 +26,19 @@ const SendMoney = () => {
     };
 
     try {
-      setLoading(true);
-      const data = await handleSubmitTransaction("/sendmoney", transactionData);
+      const res = await addTransaction({
+        url: "/sendmoney",
+        data: transactionData,
+      });
 
+      if (res.error) {
+        console.log(res.error);
+        throw Error(res?.error?.data?.message);
+      }
       router.push("/wallet");
-      revalidateUser();
       toast.success("Send money successful", { duration: 6000 });
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+      toast.error(error.message || "Send money failed");
     }
   };
 
@@ -45,7 +47,7 @@ const SendMoney = () => {
       <PageTitle>Send money</PageTitle>
       <TransactionForm
         submitTransaction={submitSendMoney}
-        submitInProgress={loading}
+        submitInProgress={isLoading}
       />
     </div>
   );

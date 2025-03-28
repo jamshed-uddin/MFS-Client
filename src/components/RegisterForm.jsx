@@ -78,7 +78,7 @@ const RegisterForm = ({ submitFunc, submitInProgress = false }) => {
           <label htmlFor="pin" className="font-medium text-sm">
             Pin
           </label>
-          <PinInput />
+          <PinInput className={"loginRegisterInputStyle"} />
         </div>
         <Button
           type="submit"

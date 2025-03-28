@@ -1,65 +1,34 @@
 "use client";
 
-import { requestClient } from "@/utils/requestClient";
+import { useGetUserDataQuery } from "@/redux/APIs/baseApi";
+import { getCookies } from "@/utils/cookieOps";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import React, { createContext } from "react";
-import useSWR from "swr";
-
+import React, { createContext, useEffect, useState } from "react";
 export const SessionContext = createContext(null);
 
 const SessionProviders = ({ children }) => {
-  const token = Cookies.get("token");
-  let userId = null;
+  const [userId, setUserId] = useState(null);
 
-  if (
-    token !== "undefined" &&
-    typeof token === "string" &&
-    token.trim().length > 0
-  ) {
-    try {
-      const decoded = jwtDecode(token);
-      userId = decoded?._id || null;
-    } catch (error) {
-      console.error("JWT Decode Error:", error);
-    }
-  }
+  useEffect(() => {
+    const { token } = getCookies("session");
+    setUserId(jwtDecode(token)?._id.toString());
+  }, []);
 
-  const key = token ? `user-available-${token}` : null;
-  const {
-    data: user,
-    mutate,
-    isLoading,
-  } = useSWR(
-    key ? `/users/${userId}` : null,
-    async (url) => {
-      if (!token) return;
-      const data = await requestClient(url);
+  const { data, isLoading, error } = useGetUserDataQuery(userId, {
+    skip: !userId,
+    refetchOnFocus: true,
+  });
 
-      return data?.data;
-    },
-    { revalidateOnMount: true }
-  );
-
-  const isLoggedIn = () => {
-    return !!token;
-  };
-
-  const isAdmin = () => {
-    return user?.role === "admin";
-  };
-
-  const isAgent = () => {
-    return user?.role === "agent";
-  };
+  console.log(data);
+  // console.log(_id);
 
   const value = {
-    user: user,
+    user: data,
     userLoading: isLoading,
-    revalidateUser: mutate,
-    isLoggedIn: isLoggedIn(),
-    isAdmin: isAdmin(),
-    isAgent: isAgent(),
+    isLoggedIn: !!userId,
+    isAdmin: data?.role === "admin",
+    isAgent: data?.role === "agent",
   };
   return (
     <SessionContext.Provider value={value || {}}>

@@ -3,15 +3,15 @@
 import PageTitle from "@/components/PageTitle";
 import TransactionForm from "@/components/TransactionForm";
 import useSession from "@/hooks/useSession";
-import handleSubmitTransaction from "@/utils/handleSubmitTransaction";
+import { useAddTransactionMutation } from "@/redux/APIs/baseApi";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 
 const Cashin = () => {
   const router = useRouter();
   const { isAgent } = useSession();
-  const [loading, setLoading] = useState(false);
+  const [addTransaction, { isLoading }] = useAddTransactionMutation();
 
   useEffect(() => {
     if (!isAgent) router.push("/wallet");
@@ -33,16 +33,21 @@ const Cashin = () => {
     };
 
     try {
-      setLoading(true);
-      const data = await handleSubmitTransaction("/cashin", transactionData);
+      const res = await addTransaction({
+        url: "/cashin",
+        data: transactionData,
+      });
+
+      if (res.error) {
+        console.log(res.error);
+        throw Error(res?.error?.data?.message);
+      }
 
       router.push("/wallet");
-      revalidateUser();
+
       toast.success("Cash in successful", { duration: 6000 });
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+      toast.error(error.message || "Cash in failed");
     }
   };
 
@@ -51,7 +56,7 @@ const Cashin = () => {
       <PageTitle>Cash in</PageTitle>
       <TransactionForm
         submitTransaction={submitCashin}
-        submitInProgress={loading}
+        submitInProgress={isLoading}
       />
     </div>
   );

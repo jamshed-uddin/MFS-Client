@@ -1,16 +1,14 @@
 "use client";
 import PageTitle from "@/components/PageTitle";
 import TransactionForm from "@/components/TransactionForm";
-import useSession from "@/hooks/useSession";
-import handleSubmitTransaction from "@/utils/handleSubmitTransaction";
+import { useAddTransactionMutation } from "@/redux/APIs/baseApi";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 
 const Cashout = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const { revalidateUser } = useSession();
+  const [addTransaction, { isLoading }] = useAddTransactionMutation();
   const submitCashout = async (e) => {
     e.preventDefault();
     const currentTarget = e.currentTarget;
@@ -27,16 +25,21 @@ const Cashout = () => {
     };
 
     try {
-      setLoading(true);
-      const data = await handleSubmitTransaction("/cashout", transactionData);
+      const res = await addTransaction({
+        url: "/cashout",
+        data: transactionData,
+      });
+
+      if (res.error) {
+        console.log(res.error);
+        throw Error(res?.error?.data?.message);
+      }
 
       router.push("/wallet");
-      revalidateUser();
+
       toast.success("Cash out successful", { duration: 6000 });
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+      toast.error(error.message || "Cash out failed");
     }
   };
   return (
@@ -44,7 +47,7 @@ const Cashout = () => {
       <PageTitle>Cash out</PageTitle>
       <TransactionForm
         submitTransaction={submitCashout}
-        submitInProgress={loading}
+        submitInProgress={isLoading}
       />
     </div>
   );

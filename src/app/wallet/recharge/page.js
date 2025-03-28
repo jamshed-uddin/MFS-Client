@@ -3,14 +3,16 @@
 import PageTitle from "@/components/PageTitle";
 import TransactionForm from "@/components/TransactionForm";
 import useSession from "@/hooks/useSession";
-import handleSubmitTransaction from "@/utils/handleSubmitTransaction";
+import { useAddTransactionMutation } from "@/redux/APIs/baseApi";
+
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Recharge = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [addTransaction, { isLoading }] = useAddTransactionMutation();
+
   const { isAgent } = useSession();
 
   useEffect(() => {
@@ -33,18 +35,23 @@ const Recharge = () => {
     };
 
     try {
-      setLoading(true);
-      const data = await handleSubmitTransaction("/recharge", transactionData);
+      const res = await addTransaction({
+        url: "/recharge",
+        data: transactionData,
+      });
+
+      if (res.error) {
+        console.log(res.error);
+        throw Error(res?.error?.data?.message);
+      }
 
       router.push("/wallet");
-      revalidateUser();
+
       toast.success("Balance recharge request sent and under review", {
         duration: 6000,
       });
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+      toast.error(error.message || "Balance request failed");
     }
   };
 
@@ -53,7 +60,7 @@ const Recharge = () => {
       <PageTitle>Balance recharge</PageTitle>
 
       <TransactionForm
-        submitInProgress={loading}
+        submitInProgress={isLoading}
         submitTransaction={submitBalanceRecharge}
       />
     </div>

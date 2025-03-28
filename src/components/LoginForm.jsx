@@ -7,7 +7,7 @@ import PinInput from "./PinInput";
 const LoginForm = ({ submitFunc, submitInProgress }) => {
   return (
     <div>
-      <form onSubmit={submitFunc} className="space-y-2">
+      <form onSubmit={submitFunc} className="space-y-2" data-testid="loginForm">
         <div className="flex flex-col space-y-1">
           <label htmlFor="emailOrMobileNumber" className="font-medium text-sm">
             Email or Mobile number
@@ -15,6 +15,7 @@ const LoginForm = ({ submitFunc, submitInProgress }) => {
           <input
             name="emailOrMobileNumber"
             type="text"
+            id="emailOrMobileNumber"
             className="loginRegisterInputStyle"
             placeholder="Enter email or mobile number "
             required
@@ -24,9 +25,13 @@ const LoginForm = ({ submitFunc, submitInProgress }) => {
           <label htmlFor="pin" className="font-medium text-sm">
             Pin
           </label>
-          <PinInput />
+          <PinInput className={"loginRegisterInputStyle"} />
         </div>
-        <Button type="submit" loading={submitInProgress}>
+        <Button
+          type="submit"
+          loading={submitInProgress}
+          disabled={submitInProgress}
+        >
           Login
         </Button>
       </form>

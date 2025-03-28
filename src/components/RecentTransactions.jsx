@@ -8,6 +8,10 @@ import getTransactions from "@/utils/getTransactions";
 const RecentTransactions = async () => {
   const transactions = await getTransactions("/transactions?limit=5");
 
+  if (!transactions?.data.length) {
+    return null;
+  }
+
   return (
     <div>
       <div className="flex justify-between">

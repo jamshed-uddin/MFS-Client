@@ -3,7 +3,10 @@ import Cookies from "js-cookie";
 export const requestClient = async (url, options = {}) => {
   const serverBaseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
   const apiUrl = `${serverBaseUrl}${url}`;
-  const token = Cookies.get("token");
+
+  const { token } = Cookies.get("session")
+    ? JSON.parse(Cookies.get("session"))
+    : {};
 
   try {
     const response = await fetch(apiUrl, {

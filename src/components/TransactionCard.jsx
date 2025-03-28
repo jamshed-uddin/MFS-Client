@@ -7,9 +7,11 @@ import ModalClient from "./ModalClient";
 import formatDate from "@/utils/formatDate";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Button from "./Button";
-import { requestClient } from "@/utils/requestClient";
+
 import toast from "react-hot-toast";
 import useSession from "@/hooks/useSession";
+import { useUpdateTransactionMutation } from "@/redux/APIs/baseApi";
+import { useNetworkState } from "@uidotdev/usehooks";
 
 const TransactionCard = ({ transaction }) => {
   const { isAdmin } = useSession();
@@ -25,7 +27,8 @@ const TransactionCard = ({ transaction }) => {
     senderMobile,
     receiverMobile,
   } = transaction;
-  const [loading, setLoading] = useState(false);
+  const [updateaTransaction, { isLoading }] = useUpdateTransactionMutation();
+  const { online } = useNetworkState();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(status);
   const openModal = () => {
@@ -51,18 +54,18 @@ const TransactionCard = ({ transaction }) => {
     if (!isAdmin) return;
 
     try {
-      setLoading(true);
-      const res = await requestClient(`/transactions/${_id}`, {
-        method: "PUT",
-        body: JSON.stringify({ status: selectedStatus }),
+      const res = updateaTransaction({
+        id: _id,
+        data: { status: selectedStatus },
       });
-
+      if (res.error) {
+        console.log(res.error);
+        throw Error(res?.error?.data?.message);
+      }
       toast.success(`Transaction ${selectedStatus}`);
       closeModal();
     } catch (error) {
       toast.error(error.message || "Something wrong with approval update");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -136,7 +139,8 @@ const TransactionCard = ({ transaction }) => {
                   <Button
                     onClick={handleApproval}
                     className={"!btn-sm"}
-                    loading={loading}
+                    disabled={isLoading || !online}
+                    loading={isLoading}
                   >
                     {" "}
                     Save

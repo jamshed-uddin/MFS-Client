@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-tr from-white to-sky-100  h-screen   overflow-y-auto`}
       >
-        <SessionProviders>{children}</SessionProviders>
+        {children}
       </body>
     </html>
   );

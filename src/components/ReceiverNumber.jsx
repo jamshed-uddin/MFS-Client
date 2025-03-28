@@ -37,8 +37,11 @@ const ReceiverNumber = () => {
 
   return (
     <div className="">
-      <label className={"text-sm font-medium"}>Receiver number</label>
+      <label className={"text-sm font-medium"} htmlFor="receiverNumber">
+        Receiver number
+      </label>
       <input
+        id="receiverNumber"
         name="receiverMobile"
         type="text"
         className={inputStyle}
@@ -52,7 +55,7 @@ const ReceiverNumber = () => {
           ? userResult?.map((user) => (
               <div
                 key={user._id}
-                className=" border border-gray-400 rounded-xl p-1 cursor-pointer"
+                className=" border-b border-gray-400  pb-2 cursor-pointer"
                 onClick={() => {
                   setNumberQuery(user?.mobileNumber);
                   setSelectedNumber(user?.mobileNumber);

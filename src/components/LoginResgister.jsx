@@ -6,6 +6,7 @@ import RegisterForm from "./RegisterForm";
 import { requestClient } from "@/utils/requestClient";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { setCookie } from "@/utils/cookieOps";
 
 const LoginResgister = () => {
   const router = useRouter();
@@ -24,6 +25,8 @@ const LoginResgister = () => {
       return setError("Pin length must be 5");
     }
 
+    console.log(credentials);
+
     try {
       setLoading(true);
 
@@ -32,7 +35,9 @@ const LoginResgister = () => {
         body: JSON.stringify(credentials),
       });
 
-      Cookies.set("token", res?.data?.token);
+      console.log(res);
+
+      setCookie("session", { token: res?.data?.token, role: res?.data?.role });
       router.push("/wallet");
     } catch (error) {
       setError(error?.message);
@@ -60,7 +65,10 @@ const LoginResgister = () => {
         body: JSON.stringify(userInfo),
       });
 
-      Cookies.set("token", res?.data?.token);
+      Cookies.set(
+        "session",
+        JSON.stringify({ token: res?.data?.token, role: res?.data?.role })
+      );
       router.push("/wallet");
     } catch (error) {
       setError(error?.message);

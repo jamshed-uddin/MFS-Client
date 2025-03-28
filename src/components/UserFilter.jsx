@@ -8,72 +8,78 @@ export default function UserFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Get initial values from URL or set defaults
-  const [role, setRole] = useState(searchParams.get("role") || "");
-  const [status, setStatus] = useState(searchParams.get("status") || "");
-  const [activeOnly, setActiveOnly] = useState(
-    searchParams.get("activeOnly") === "true"
-  );
-
-  // Update URL when filters change
-  useEffect(() => {
-    const params = new URLSearchParams();
-
-    if (role) params.set("role", role);
-    if (status) params.set("status", status);
-    if (activeOnly) params.set("activeOnly", "true");
-
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    router.push(newUrl, { scroll: false });
-  }, [role, status, activeOnly, router]);
-
   // Clear all filters
   const clearFilters = () => {
-    setRole("");
-    setStatus("");
-    setActiveOnly(false);
-    router.push(window.location.pathname, { scroll: false });
+    window.history.replaceState(null, "", `/wallet/users`);
+  };
+
+  const setQueryToUrl = (e) => {
+    const params = new URLSearchParams(searchParams);
+    const { name, value } = e.target;
+
+    if (name === value) {
+      params.delete(name);
+    } else {
+      params.set(name, value);
+    }
+
+    window.history.replaceState(null, "", `/wallet/users?${params.toString()}`);
+  };
+  const setActiveOnly = (checked) => {
+    const params = new URLSearchParams(searchParams);
+    if (checked) {
+      params.set("isActive", checked);
+    } else {
+      params.delete("isActive");
+    }
+
+    window.history.replaceState(null, "", `/wallet/users?${params.toString()}`);
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 rounded-lg items-center">
+    <div className="flex  gap-4 flex-nowrap overflow-x-auto items-center">
       <div className="flex flex-col gap-2">
         <select
-          className="select select-sm select-bordered w-full max-w-xs bg-inherit"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
+          className="selectStyle"
+          name="role"
+          onChange={setQueryToUrl}
+          defaultValue={searchParams.get("role")}
         >
-          <option value="">Select Role</option>
+          <option value="role">Select Role</option>
           <option value="user">User</option>
           <option value="agent">Agent</option>
         </select>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 shrink-0">
         <select
-          className="select select-sm select-bordered w-full max-w-xs bg-inherit"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
+          className="selectStyle"
+          name="status"
+          onChange={setQueryToUrl}
+          defaultValue={searchParams.get("status")}
         >
-          <option value="">Select Status</option>
+          <option value="status">Select Status</option>
           <option value="pending">Pending</option>
           <option value="approved">Approved</option>
           <option value="rejected">Rejected</option>
         </select>
       </div>
 
-      <div className="flex  gap-2">
+      <div className="flex  gap-2 shrink-0">
         <label className="text-sm font-medium">Active Only</label>
         <div className="flex items-center gap-2">
           <Toggler
-            isChecked={activeOnly}
+            isChecked={searchParams.get("isActive") === "true"}
             onToggle={(checked) => setActiveOnly(checked)}
           />
         </div>
       </div>
 
-      <div className="flex flex-col justify-end">
-        <button onClick={clearFilters} className="btn btn-sm btn-outline">
+      <div className="flex flex-col justify-end shrink-0">
+        <button
+          onClick={clearFilters}
+          className="rounded-lg font-medium px-3 py-[3px] border border-blue-600"
+        >
           Clear Filters
         </button>
       </div>

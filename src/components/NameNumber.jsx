@@ -13,7 +13,10 @@ export const NameNumberCard = ({ name, number }) => {
 };
 
 const NameNumber = () => {
-  const { user } = useSession();
+  const { user, userLoading } = useSession();
+  if (userLoading) {
+    return <div>...</div>;
+  }
 
   return <NameNumberCard name={user?.name} number={user?.mobileNumber} />;
 };

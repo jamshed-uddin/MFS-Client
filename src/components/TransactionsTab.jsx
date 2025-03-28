@@ -45,9 +45,22 @@ const TransactionsTab = () => {
       params.set("type", value);
     }
 
-    router.push(`/wallet/transactions?${params?.toString()}`, {
-      scroll: false,
-    });
+    router.replace(`/wallet/transactions?${params?.toString()}`);
+  };
+
+  const handleStatus = (e) => {
+    const { value } = e.target;
+
+    const params = new URLSearchParams(searchParams);
+
+    if (value === "selectStatus") {
+      params.delete("status");
+    } else {
+      params.set("status", value);
+    }
+
+    console.log(params);
+    router.replace(`/wallet/transactions?${params?.toString()}`);
   };
 
   const roleBasedFilters = {
@@ -67,9 +80,9 @@ const TransactionsTab = () => {
           onClick={() => handleSelectTab(value)}
           key={value}
           className={clsx(
-            "border border-blue-500 px-2 rounded-lg shrink-0 text-sm py-0.5 font-medium cursor-pointer",
+            "border border-blue-600 px-2 rounded-lg shrink-0 text-sm pt-1 font-medium cursor-pointer",
             {
-              "bg-blue-500 text-white":
+              "bg-blue-600 text-white":
                 value === searchParams.get("type")?.toString(),
             }
           )}
@@ -77,6 +90,14 @@ const TransactionsTab = () => {
           {name}
         </div>
       ))}
+      <div className="flex flex-col gap-2">
+        <select className="selectStyle" onChange={handleStatus}>
+          <option value="selectStatus">Select Status</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import React from "react";
 const LogoutButton = () => {
   const router = useRouter();
   const handleLogout = () => {
-    Cookies.remove("token");
+    Cookies.remove("session");
     router.push("/");
   };
   return (
